@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { FaStar, FaShoppingCart } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
@@ -27,7 +28,6 @@ const ProductCard = ({ product }) => {
     <div className="card bg-base-100 shadow-md hover:shadow-xl transition duration-300">
       <figure className="relative h-52 w-full">
         <Image
-          
           src={image}
           alt={title}
           fill
@@ -67,10 +67,13 @@ const ProductCard = ({ product }) => {
 
         {/* Add to Cart Button */}
         <div className="card-actions mt-3">
-          <button className="btn btn-primary w-full gap-2">
+          <button className="btn btn-primary gap-2">
             <FaShoppingCart />
             Add to Cart
           </button>
+          <Link href={`/products/${product._id}`}>
+            <button className="btn btn-primary btn-outline w-full">View Details</button>
+          </Link>
         </div>
       </div>
     </div>
