@@ -15,6 +15,7 @@ const ProductDetailsPage = async ({ params }) => {
 
     return (
         <div className="container mx-auto px-4 py-10">
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-6 rounded-2xl shadow-sm">
                 
                 {/* 1. Image section */}

@@ -12,6 +12,7 @@
     "@react-icons/all-files": "^4.1.0",
     "bcryptjs": "^3.0.3",
     "daisyui": "^5.5.19",
+    "framer-motion": "^12.34.5",
     "lenis": "^1.3.18-dev.1",
     "mongodb": "^7.1.0",
     "next": "16.1.6",

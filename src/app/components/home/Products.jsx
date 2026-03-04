@@ -7,6 +7,7 @@ const Products = async () => {
     const products = (await getProducts()) || []
     return (
         <div>
+            <title>Hero Kidz | Products</title>
             <h2 className='text-center text-4xl font-semibold mb-10'>Our Products</h2>
 
             <div className="grid md:grid-cols-3 gap-8">
