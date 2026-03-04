@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import React from 'react';
-import { BiSolidErrorAlt } from "react-icons/bi";
+import { TbError404Off } from "react-icons/tb";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { motion } from "framer-motion"; 
 
@@ -14,7 +14,7 @@ const Error404 = () => {
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-                <BiSolidErrorAlt size={100} className='text-primary' />
+                <TbError404Off size={100} className='text-primary' />
             </motion.div>
 
             {/* 2. Text Animation: Slide up and Fade in */}
@@ -25,7 +25,7 @@ const Error404 = () => {
                 className="text-center"
             >
                 <h1 className='text-5xl font-medium'>Oops!</h1>
-                <p className='text-3xl py-6'>Content Not Found</p>
+                <p className='text-3xl py-6'>Something Went Wrong</p>
             </motion.div>
 
             {/* 3. Button Animation: Hover effect */}

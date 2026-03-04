@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Banner from "./components/Home/Banner";
-import Products from "./components/Home/Products";
+import Banner from "./components/home/Banner";
+import Products from "./components/home/Products";
 
 export default function Home() {
   return (
