@@ -1,13 +1,47 @@
 "use client";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { FaEnvelope, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
+import Swal from "sweetalert2";
+import SocialButton from "../buttons/SocialButton";
 
 const LoginForm = () => {
-  const handleSubmit = (e) => {
+  const params = useSearchParams();
+  const callBack = params.get("callbackUrl") || "/"
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    console.log("Login Data:", Object.fromEntries(formData.entries()));
+    // const formData = new FormData(e.target);
+    // console.log("Login Data:", Object.fromEntries(formData.entries()));
+    console.log("Login Attempt with:", form);
+    const result = await signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      // redirect: false,
+      callbackUrl: params.get("callbackUrl") || "/",
+    });
+    console.log("SignIn Result:", result);
+    if (!result.ok) {
+      Swal.fire("Oops!", "Email or Password didn't matched", "error");
+    } else {
+      Swal.fire({
+        title: "Login Successful!",
+        icon: "success",
+        draggable: true,
+      });
+    }
   };
 
   return (
@@ -29,6 +63,8 @@ const LoginForm = () => {
             <input
               name="email"
               type="email"
+              value={form.email}
+              onChange={handleChange}
               placeholder="email@example.com"
               className="input input-bordered w-full pl-10"
               required
@@ -45,6 +81,8 @@ const LoginForm = () => {
             <input
               name="password"
               type="password"
+              value={form.password}
+              onChange={handleChange}
               placeholder="••••••••"
               className="input input-bordered w-full pl-10"
               required
@@ -66,18 +104,12 @@ const LoginForm = () => {
         Or login with
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <button type="button" className="btn btn-outline border-base-300 gap-2">
-          <FaGoogle className="text-red-500" /> Google
-        </button>
-        <button type="button" className="btn btn-outline border-base-300 gap-2">
-          <FaGithub /> Github
-        </button>
-      </div>
+      <SocialButton></SocialButton>
 
       <p className="text-center text-sm mt-8">
         Don't have an account?
-        <Link href={"/register"}
+        <Link
+          href={`/register?callbackUrl=${callBack}`}
           // onClick={toggleForm}
           className="ml-2 font-bold text-primary hover:underline"
         >

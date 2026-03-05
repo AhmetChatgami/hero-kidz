@@ -1,18 +1,20 @@
+
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
-import localFont from 'next/font/local'
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
+import NextAuthProvider from "@/provider/NextAuthProvider";
 
 const poppins = Poppins({
   weight: ["100", "200", "400", "500", "600", "800"],
 });
 
 export const fontBangla = localFont({
-  src: "./../fonts/mayaboti-normal.ttf"
-})
+  src: "./../fonts/mayaboti-normal.ttf",
+});
 
- export const metadata = {
+export const metadata = {
   metadataBase: new URL("https://hero-kidz-rosy.vercel.app"),
 
   title: {
@@ -62,8 +64,7 @@ export const fontBangla = localFont({
   twitter: {
     card: "summary_large_image",
     title: "Hero Kidz | Modern Web Store",
-    description:
-      "Discover high-quality educational and learning products.",
+    description: "Discover high-quality educational and learning products.",
     images: ["https://i.ibb.co/FLRTntX8/homepage-preview.png"],
     creator: "@yourtwitterhandle",
   },
@@ -77,18 +78,20 @@ export const fontBangla = localFont({
 };
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
-        <header className="py-2 md:w-11/12 mx-auto">
-          <Navbar></Navbar>
-        </header>
-        <main className="py-2 px-5 md:w-11/12 mx-auto min-h-[calc(100svh-297px)]">
-          {children}
-        </main>
-        <footer>
-          <Footer></Footer>
-        </footer>
-      </body>
-    </html>
+    <NextAuthProvider>
+      <html lang="en">
+        <body className={`${poppins.className} antialiased`}>
+          <header className="py-2 md:w-11/12 mx-auto">
+            <Navbar></Navbar>
+          </header>
+          <main className="py-2 px-5 md:w-11/12 mx-auto min-h-[calc(100svh-297px)]">
+            {children}
+          </main>
+          <footer>
+            <Footer></Footer>
+          </footer>
+        </body>
+      </html>
+    </NextAuthProvider>
   );
 }

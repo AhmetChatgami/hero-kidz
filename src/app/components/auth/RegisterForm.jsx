@@ -1,15 +1,19 @@
 "use client";
 import { postUser } from "@/actions/server/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { FaEnvelope, FaGithub, FaGoogle, FaLock, FaUser } from "react-icons/fa";
-
+import SocialButton from "../buttons/SocialButton";
+import { signIn } from "next-auth/react";
 
 const RegisterForm = () => {
+  const params = useSearchParams();
+  const callBackUrl = params.get("callbackUrl") || "/";
   const router = useRouter();
   const [form, setForm] = useState({
-    name: "", 
+    name: "",
     email: "",
     password: "",
   });
@@ -25,15 +29,19 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   
     const result = await postUser(form);
     console.log("Server Response:", result);
 
-    if (result && result.acknowledged) {
+    if (result?.acknowledged) {
       alert("Registration successful!");
-      
+
       // toggleForm();
-      router.push("/login")
+      // router.push("/login");
+      const result = await signIn("credentials", {
+        email: form.email,
+        password: form.password,
+        callbackUrl: callBackUrl,
+      });
     } else {
       alert(result?.error || "Registration failed.");
     }
@@ -115,18 +123,12 @@ const RegisterForm = () => {
         Or sign up with
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <button type="button" className="btn btn-outline border-base-300 gap-2 hover:bg-red-500 hover:text-white">
-          <FaGoogle/> Google
-        </button>
-        <button type="button" className="btn btn-outline border-base-300 gap-2 hover:text-black">
-          <FaGithub className=""/> Github
-        </button>
-      </div>
+      <SocialButton></SocialButton>
 
       <p className="text-center text-sm mt-8">
         Already have an account?
-        <Link href={"/login"}
+        <Link
+          href={"/login"}
           // onClick={toggleForm}
           className="ml-2 font-bold text-primary hover:underline"
         >
