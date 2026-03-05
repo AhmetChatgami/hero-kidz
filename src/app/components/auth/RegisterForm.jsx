@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaEnvelope, FaGithub, FaGoogle, FaLock, FaUser } from "react-icons/fa";
 import SocialButton from "../buttons/SocialButton";
 import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 
 const RegisterForm = () => {
   const params = useSearchParams();
@@ -33,8 +34,7 @@ const RegisterForm = () => {
     console.log("Server Response:", result);
 
     if (result?.acknowledged) {
-      alert("Registration successful!");
-
+      
       // toggleForm();
       // router.push("/login");
       const result = await signIn("credentials", {
@@ -42,6 +42,7 @@ const RegisterForm = () => {
         password: form.password,
         callbackUrl: callBackUrl,
       });
+      Swal.fire("Success", "Registration successful!", "success");
     } else {
       alert(result?.error || "Registration failed.");
     }
