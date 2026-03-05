@@ -1,4 +1,5 @@
 import { getSingleProduct } from "@/actions/server/product";
+import CartButton from "@/app/components/buttons/CartButton";
 import Error404 from "@/app/not-found";
 import Image from "next/image";
 import { FaStar, FaShoppingCart, FaCheckCircle } from "react-icons/fa";
@@ -121,9 +122,10 @@ const ProductDetailsPage = async ({ params }) => {
 
           {/* button*/}
           <div className="flex gap-4 mt-auto">
-            <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all">
-              <FaShoppingCart /> Add to Cart
-            </button>
+            <div className="flex-1 bg-primary  text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all">
+              {/* <FaShoppingCart /> Add to Cart */}
+            <CartButton product={product}></CartButton>
+            </div>
             <button className="flex-1 border-2 border-blue-600 text-blue-600 font-bold py-4 rounded-xl hover:bg-blue-50 transition-all">
               Buy Now
             </button>

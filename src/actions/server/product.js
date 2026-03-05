@@ -4,13 +4,11 @@ import { collections, dbConnect } from "@/lib/dbConnect";
 import { ObjectId } from "mongodb";
 
 export const getProducts = async () => {
-    // MongoDB theke data anlam
-    const products = await dbConnect(collections.PRODUCTS).find().toArray();
-    
-    // Complex MongoDB data-ke plain JSON-e convert korar shohoj upay:
-    const plainProducts = JSON.parse(JSON.stringify(products));
-    
-    return plainProducts;
+  const products = await dbConnect(collections.PRODUCTS).find().toArray();
+
+  // const plainProducts = JSON.parse(JSON.stringify(products));
+
+  return products;
 };
 
 export const getSingleProduct = async (id) => {
@@ -21,5 +19,5 @@ export const getSingleProduct = async (id) => {
 
   const product = await dbConnect(collections.PRODUCTS).findOne(query);
 
-  return product || {};
+  return { ...product, _id: product._id.toString() } || {};
 };
