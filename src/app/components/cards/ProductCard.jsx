@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar, FaShoppingCart } from "react-icons/fa";
+import CartButton from "../buttons/CartButton";
 
 const ProductCard = ({ product }) => {
   //   if (loading) {
@@ -18,7 +19,8 @@ const ProductCard = ({ product }) => {
   //     );
   //   }
 
-  const { title, image, price, discount, ratings, reviews, sold } = product;
+  const { title, image, price, discount, ratings, _id, reviews, sold } =
+    product;
 
   const discountedPrice = discount
     ? (price - (price * discount) / 100).toFixed(0)
@@ -67,12 +69,17 @@ const ProductCard = ({ product }) => {
 
         {/* Add to Cart Button */}
         <div className="card-actions mt-3">
-          <button className="btn btn-primary gap-2">
+          {/* <button className="btn btn-primary gap-2">
             <FaShoppingCart />
             Add to Cart
-          </button>
+          </button> */}
+          <CartButton
+            product={{ ...product, _id: _id.toString() }}
+          ></CartButton>
           <Link href={`/products/${product._id}`}>
-            <button className="btn btn-primary btn-outline w-full">View Details</button>
+            <button className="btn btn-primary btn-outline w-full">
+              View Details
+            </button>
           </Link>
         </div>
       </div>

@@ -1,27 +1,36 @@
 "use client";
 
+import { handleCart } from "@/actions/server/cart";
+import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const CartButton = ({ product }) => {
-  const isLogin = false;
+  const session = useSession();
+  const isLogin = session?.status == "authenticated";
   const router = useRouter();
   const path = usePathname();
 
-  const addtoCart = () => {
-    if (isLogin) alert(product._id);
-    else {
+  const addtoCart = async () => {
+    if (isLogin) {
+      const result= await handleCart({ product, inc: true });
+      if(result.success){
+        Swal.fire("Added to Cart", product.title, "success")
+      } else{
+        Swal.fire("Oops!", "Something Went Wrong", "error")
+
+      }
+    } else {
       router.push(`/login?callbackUrl=${path}`);
     }
   };
   return (
     <div>
-      <button
-        onClick={addtoCart}
-        className="flex-1 bg-primary text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
-      >
-        <FaShoppingCart /> Add to Cart
+      <button onClick={addtoCart} className="btn btn-primary gap-2">
+        <FaShoppingCart />
+        Add to Cart
       </button>
     </div>
   );
