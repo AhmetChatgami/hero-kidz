@@ -34,7 +34,6 @@ const RegisterForm = () => {
     console.log("Server Response:", result);
 
     if (result?.acknowledged) {
-      
       // toggleForm();
       // router.push("/login");
       const result = await signIn("credentials", {
@@ -42,9 +41,12 @@ const RegisterForm = () => {
         password: form.password,
         callbackUrl: callBackUrl,
       });
-      Swal.fire("Success", "Registration successful!", "success");
+      if (result.ok) {
+        Swal.fire("Success", "Registration successful!", "success");
+        router.push(callBackUrl);
+      }
     } else {
-      alert(result?.error || "Registration failed.");
+      Swal.fire(result?.error || "Registration failed.");
     }
   };
 

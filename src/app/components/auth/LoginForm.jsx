@@ -29,7 +29,7 @@ const LoginForm = () => {
     const result = await signIn("credentials", {
       email: form.email,
       password: form.password,
-      // redirect: false,
+      redirect: false,
       callbackUrl: params.get("callbackUrl") || "/",
     });
     console.log("SignIn Result:", result);
@@ -41,6 +41,7 @@ const LoginForm = () => {
         icon: "success",
         draggable: true,
       });
+      router.push(callBack)
     }
   };
 
