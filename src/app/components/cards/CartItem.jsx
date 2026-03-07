@@ -23,28 +23,29 @@ const CartItem = ({
   const [loading, setLoading] = useState(false);
 
   const handleIncrease = async () => {
-    setLoading(true)
+    setLoading(true);
     const result = await increaseItemDb(_id, quantity);
 
     if (result.success) {
       Swal.fire("Updated", "Item increased", "success");
       updateQuantity(_id, quantity + 1);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const handleDecrease = async () => {
-    setLoading(true)
-     const result = await decreaseItemDb(_id, quantity);
+    setLoading(true);
+    const result = await decreaseItemDb(_id, quantity);
 
     if (result.success) {
       Swal.fire("Updated", "Item decreased", "success");
       updateQuantity(_id, quantity - 1);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const handleRemove = async () => {
+    setLoading(true);
     const result = await Swal.fire({
       title: "Remove item?",
       text: "This item will be removed from cart.",
@@ -66,6 +67,7 @@ const CartItem = ({
           Swal.fire("Error", "Failed to delete", "error");
         }
       }
+      setLoading(false)
     });
   };
 
@@ -90,17 +92,21 @@ const CartItem = ({
 
       {/* Quantity Control */}
       <div className="flex items-center gap-2">
-        <button onClick={handleDecrease} 
-        disabled={quantity === 1 || loading}
-        className="btn btn-sm btn-circle">
+        <button
+          onClick={handleDecrease}
+          disabled={quantity === 1 || loading}
+          className="btn btn-sm btn-circle"
+        >
           <FaMinus />
         </button>
 
         <span className="px-2 font-semibold">{quantity}</span>
 
-        <button onClick={handleIncrease} 
-        disabled={quantity === 10 || loading}
-        className="btn btn-sm btn-circle">
+        <button
+          onClick={handleIncrease}
+          disabled={quantity === 10 || loading}
+          className="btn btn-sm btn-circle"
+        >
           <FaPlus />
         </button>
       </div>
