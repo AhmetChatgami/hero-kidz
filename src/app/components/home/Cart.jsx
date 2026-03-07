@@ -12,7 +12,17 @@ const Cart = ({ cartItem = [] }) => {
   );
 
   const removeItem = (id) => {
-    setItems((prevItems) => prevItems.filter((item) => item._id.toString() !== id));
+    setItems((prevItems) =>
+      prevItems.filter((item) => item._id.toString() !== id),
+    );
+  };
+
+  const updateQuantity = (id, q) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id == id ? { ...item, quantity: q } : item,
+      ),
+    );
   };
   return (
     <div>
@@ -27,6 +37,7 @@ const Cart = ({ cartItem = [] }) => {
               key={item._id.toString()}
               item={{ ...item, _id: item._id.toString() }}
               removeItem={removeItem}
+              updateQuantity={updateQuantity}
             ></CartItem>
           ))}
         </div>

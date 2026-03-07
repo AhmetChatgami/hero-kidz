@@ -4,20 +4,35 @@ import Image from "next/image";
 import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { deleteItemsFromCart } from "@/actions/server/cart";
+import {
+  decreaseItemDb,
+  deleteItemsFromCart,
+  increaseItemDb,
+} from "@/actions/server/cart";
 
-const CartItem = ({ item, removeItem, onQuantityChange, onRemove }) => {
+const CartItem = ({
+  item,
+  removeItem,
+  onQuantityChange,
+  onRemove,
+  updateQuantity,
+}) => {
   const { _id, image, title, quantity, price } = item;
 
-//   const handleIncrease = () => {
-//     onQuantityChange(_id, quantity + 1);
-//   };
+  const handleIncrease = async () => {
+    const result = await increaseItemDb(_id, quantity);
 
-//   const handleDecrease = () => {
-//     if (quantity > 1) {
-//       onQuantityChange(_id, quantity - 1);
-//     }
-//   };
+    if (result.success) {
+      Swal.fire("Updated", "Item increased", "success");
+      updateQuantity(_id, quantity + 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      updateQuantity(_id, quantity - 1);
+    }
+  };
 
   const handleRemove = async () => {
     const result = await Swal.fire({
@@ -36,7 +51,7 @@ const CartItem = ({ item, removeItem, onQuantityChange, onRemove }) => {
             "This item successfuly removed from cart",
             "success",
           );
-        //   onRemove(_id);
+          //   onRemove(_id);
         } else {
           Swal.fire("Error", "Failed to delete", "error");
         }
@@ -65,17 +80,13 @@ const CartItem = ({ item, removeItem, onQuantityChange, onRemove }) => {
 
       {/* Quantity Control */}
       <div className="flex items-center gap-2">
-        <button 
-        // onClick={handleDecrease}
-         className="btn btn-sm btn-circle">
+        <button onClick={handleDecrease} className="btn btn-sm btn-circle">
           <FaMinus />
         </button>
 
         <span className="px-2 font-semibold">{quantity}</span>
 
-        <button 
-        // onClick={handleIncrease}
-         className="btn btn-sm btn-circle">
+        <button onClick={handleIncrease} className="btn btn-sm btn-circle">
           <FaPlus />
         </button>
       </div>
