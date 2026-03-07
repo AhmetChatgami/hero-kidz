@@ -59,7 +59,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end space-x-8">
-        <Link href={"/cart"} className="">
+        <Link href={"/cart"} className="border p-2.5 rounded hover:border-amber-600">
         <FaOpencart />
         </Link>
        <AuthButtons></AuthButtons>
