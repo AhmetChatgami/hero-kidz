@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import NextAuthProvider from "@/provider/NextAuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ["100", "200", "400", "500", "600", "800"],
@@ -86,6 +87,7 @@ export default function RootLayout({ children }) {
           </header>
           <main className="py-2 px-5 md:w-11/12 mx-auto min-h-[calc(100svh-297px)]">
             {children}
+             <Toaster position="top-right" />
           </main>
           <footer>
             <Footer></Footer>

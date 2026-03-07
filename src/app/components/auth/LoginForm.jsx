@@ -1,6 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { ImSpinner9 } from "react-icons/im";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import React, { useState } from "react";
@@ -8,11 +9,13 @@ import toast from "react-hot-toast";
 import { FaEnvelope, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
 import Swal from "sweetalert2";
 import SocialButton from "../buttons/SocialButton";
+import Loading from "@/app/products/[id]/loading";
 
 const LoginForm = () => {
   const params = useSearchParams();
-  const callBack = params.get("callbackUrl") || "/"
+  const callBack = params.get("callbackUrl") || "/";
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -25,6 +28,7 @@ const LoginForm = () => {
     e.preventDefault();
     // const formData = new FormData(e.target);
     // console.log("Login Data:", Object.fromEntries(formData.entries()));
+    setLoading(true);
     console.log("Login Attempt with:", form);
     const result = await signIn("credentials", {
       email: form.email,
@@ -35,13 +39,15 @@ const LoginForm = () => {
     console.log("SignIn Result:", result);
     if (!result.ok) {
       Swal.fire("Oops!", "Email or Password didn't matched", "error");
+      setLoading(false);
     } else {
       Swal.fire({
         title: "Login Successful!",
         icon: "success",
         draggable: true,
       });
-      router.push(callBack)
+      setLoading(false);
+      router.push(callBack);
     }
   };
 
@@ -97,7 +103,13 @@ const LoginForm = () => {
         </div>
 
         <button type="submit" className="btn btn-primary btn-block text-white">
-          Sign In
+          {loading ? (
+            <>
+              <ImSpinner9 className="animate-spin inline-block mr-2" /> Signing...
+            </>
+          ) : (
+            "Sign In"
+          )}
         </button>
       </form>
 
