@@ -6,18 +6,18 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { deleteItemsFromCart } from "@/actions/server/cart";
 
-const CartItem = ({ item, onQuantityChange, onRemove }) => {
+const CartItem = ({ item, removeItem, onQuantityChange, onRemove }) => {
   const { _id, image, title, quantity, price } = item;
 
-  const handleIncrease = () => {
-    onQuantityChange(_id, quantity + 1);
-  };
+//   const handleIncrease = () => {
+//     onQuantityChange(_id, quantity + 1);
+//   };
 
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      onQuantityChange(_id, quantity - 1);
-    }
-  };
+//   const handleDecrease = () => {
+//     if (quantity > 1) {
+//       onQuantityChange(_id, quantity - 1);
+//     }
+//   };
 
   const handleRemove = async () => {
     const result = await Swal.fire({
@@ -30,8 +30,13 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
       if (result.isConfirmed) {
         const result = await deleteItemsFromCart(_id);
         if (result.success) {
-          Swal.fire("Deleted", "This item successfuly removed from cart", "success");
-          onRemove(_id); 
+          removeItem(_id);
+          Swal.fire(
+            "Deleted",
+            "This item successfuly removed from cart",
+            "success",
+          );
+        //   onRemove(_id);
         } else {
           Swal.fire("Error", "Failed to delete", "error");
         }
@@ -60,13 +65,17 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
 
       {/* Quantity Control */}
       <div className="flex items-center gap-2">
-        <button onClick={handleDecrease} className="btn btn-sm btn-circle">
+        <button 
+        // onClick={handleDecrease}
+         className="btn btn-sm btn-circle">
           <FaMinus />
         </button>
 
         <span className="px-2 font-semibold">{quantity}</span>
 
-        <button onClick={handleIncrease} className="btn btn-sm btn-circle">
+        <button 
+        // onClick={handleIncrease}
+         className="btn btn-sm btn-circle">
           <FaPlus />
         </button>
       </div>
