@@ -34,6 +34,7 @@ export const sendOrderEmail = async ({ email, name, items }) => {
     html: `
       <div style="font-family:Arial;padding:20px">
         <h2>Order Confirmation</h2>
+        <img src="https://i.ibb.co/wrKffNC2/logo.png" width="200px"/>
         <p>Hello ${name},</p>
         <p>Your order has been placed successfully.</p>
 
