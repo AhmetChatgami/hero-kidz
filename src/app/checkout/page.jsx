@@ -1,9 +1,8 @@
 import { getCart } from "@/actions/server/cart";
 import React from "react";
-import CartItem from "../components/cards/CartItem";
-import Cart from "../components/home/Cart";
+import CheckOut from "../components/home/CheckOut";
 
-const CartPage = async () => {
+const chekOutPage = async () => {
   const cartItems = await getCart();
 
   const formattedItem = cartItems.map((item) => ({
@@ -14,12 +13,12 @@ const CartPage = async () => {
     <div>
       <div>
         <h2 className="text-4xl py-4 font-bold border-l-8 border-primary pl-8">
-          My Cart
+          My Checkout 
         </h2>
       </div>
-
-      <Cart cartItem={formattedItem}></Cart>
+      <CheckOut cartItems={formattedItem}></CheckOut>
     </div>
   );
 };
-export default CartPage;
+
+export default chekOutPage;

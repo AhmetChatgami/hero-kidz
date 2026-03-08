@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import CartItem from "../cards/CartItem";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const Cart = ({ cartItem = [] }) => {
   const [items, setItems] = useState(cartItem);
@@ -61,7 +62,7 @@ const Cart = ({ cartItem = [] }) => {
         </div>
 
         {/* Summary Card */}
-        <div className="w-96">
+        <div className="w-96 sticky top-20">
 
           <div className="card bg-base-100 shadow-xl border">
 
@@ -107,12 +108,13 @@ const Cart = ({ cartItem = [] }) => {
 
               {/* Confirm Button */}
               <div className="card-actions mt-4">
-                <button
+                <Link href={"/checkout"}
                   onClick={handleConfirmOrder}
                   className="btn btn-primary w-full"
+                  disabled={!items.length}
                 >
                   Confirm Order
-                </button>
+                </Link>
               </div>
 
             </div>
