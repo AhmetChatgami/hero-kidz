@@ -1,18 +1,13 @@
 "use client";
 import { createOrder } from "@/actions/server/order";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 const CheckOut = ({ cartItems = [] }) => {
   const session = useSession();
-//   const [form, setForm] = useState({
-//     name: "",
-//     email: "",
-//     deliveryInfo: "",
-//     specialInstruction: "",
-//     contact: "",
-//   });
+const router = useRouter()
   const totalItems = useMemo(
     () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
     [cartItems],
@@ -28,8 +23,25 @@ const CheckOut = ({ cartItems = [] }) => {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
-    toast.success("Order placed successfully!");
-    const result = await createOrder(form);
+
+    const form = e.target;
+
+    const payload = {
+      name: form.name.value,
+      email: form.email.value,
+      contact: form.contactNo.value,
+      address: form.deliveryInfo.value,
+      instruction: form.instruction.value,
+    };
+    const result = await createOrder(payload);
+
+    if (result.success) {
+      toast.success("Order placed successfully!");
+      router.push("/")
+    }else{
+        toast.error("Something is wrong!");
+        router.push("/cart")
+    }
   };
 
   if (session.status == "loading") {
@@ -67,6 +79,7 @@ const CheckOut = ({ cartItems = [] }) => {
               <label className="label">Email</label>
               <input
                 type="email"
+                name="email"
                 value={session?.data?.user?.email}
                 required
                 placeholder="Email Address"
@@ -79,6 +92,7 @@ const CheckOut = ({ cartItems = [] }) => {
               <label className="label">Contact Number</label>
               <input
                 type="tel"
+                name="contactNo"
                 required
                 placeholder="01XXXXXXXXX"
                 className="input input-bordered w-full"
@@ -89,6 +103,7 @@ const CheckOut = ({ cartItems = [] }) => {
             <div>
               <label className="label">Delivery Address</label>
               <textarea
+                name="deliveryInfo"
                 required
                 className="textarea textarea-bordered w-full"
                 placeholder="Enter delivery address"
@@ -99,7 +114,7 @@ const CheckOut = ({ cartItems = [] }) => {
             <div>
               <label className="label">Special Instruction</label>
               <textarea
-              
+                name="instruction"
                 className="textarea textarea-bordered w-full"
                 placeholder="Optional notes for delivery"
               ></textarea>
