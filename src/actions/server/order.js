@@ -3,6 +3,7 @@
 import { authOptions } from "@/lib/authOption";
 import { getServerSession } from "next-auth";
 import { clearCart, getCart } from "./cart";
+import { sendOrderEmail } from "@/lib/sendOrderEmail";
 
 const { dbConnect, collections } = require("@/lib/dbConnect");
 
@@ -20,15 +21,21 @@ export const createOrder = async (payload) => {
   const newOrder = {
     createAt: new Date().toISOString(),
     items: cart,
+    email: user.email,
     ...payload,
   };
 
   const result = await orderCollection.insertOne(newOrder);
 
-  if(Boolean(result.insertedId)){
-    const result = await clearCart()
+  if (Boolean(result.insertedId)) {
+    await clearCart();
+
+    await sendOrderEmail({
+      email: user.email,
+      name: user.name,
+      items: cart,
+    });
   }
-  
+
   return { success: result.insertedId };
 };
-
